@@ -18,7 +18,7 @@ Arhitectura este de tip **client–server**, cu un frontend static (HTML, CSS, J
 * ✏️ Adăugare, editare și ștergere parole
 * 🧠 Criptarea datelor sensibile la nivel de client
 * 🚪 Protejarea rutelor prin middleware de autentificare
-* 📤 Export parole în fișier JSON
+* 📤 Import , Export parole în fișier JSON
 
 ---
 
@@ -31,8 +31,6 @@ Arhitectura este de tip **client–server**, cu un frontend static (HTML, CSS, J
 * **MySQL**
 * **bcrypt** – pentru hash-uirea parolelor
 * **jsonwebtoken (JWT)** – autentificare
-* **dotenv** – variabile de mediu
-* **cors** – comunicare frontend–backend
 
 ### Frontend
 
@@ -98,21 +96,33 @@ DB_HOST=localhost
 DB_USER=root
 DB_PASSWORD=parola
 DB_NAME=password_manager
-JWT_SECRET=secretul_tau
 ```
+Notă: De obicei, singurele valori pe care trebuie să le modifici sunt DB_USER și DB_PASSWORD, în funcție de cum îți creezi baza de date. Restul (PORT, DB_HOST, DB_NAME) pot rămâne la valorile implicite dacă nu ai cerințe speciale.
 
 ### 3. Configurare bază de date
+
+Asigură-te că ai un mediu MySQL funcțional (de exemplu MySQL Workbench, phpMyAdmin sau alt mediu preferat). Nu trebuie să creezi manual baza de date — scriptul SQL se ocupă de asta.
 
 Rulează scriptul SQL din:
 
 ```
 backend/db/schema.sql
 ```
+Acesta va:
+
+crea baza de date password_manager dacă nu există,
+șterge tabelele existente (utile în development),
+crea tabelele users și passwords cu toate coloanele, relațiile și indexurile necesare,
+și va seta automat coloanele de timp (created_at, updated_at, last_login, last_used) pentru utilizatori și parole.
+
+Notă: Asigură-te că valorile din fișierul .env (DB_USER și DB_PASSWORD) corespund contului tău MySQL.
 
 ### 4. Pornire aplicație
 
+Din directorul backend ruleaza comanda:
+
 ```bash
-npm start
+npm run dev
 ```
 
 Aplicația va rula la adresa:
@@ -144,12 +154,4 @@ Acest proiect a fost realizat în scop **educațional**, pentru a demonstra:
 
 ---
 
-## Autor
 
-Proiect realizat ca temă / proiect universitar.
-
----
-
-## Observații
-
-Aplicația **nu este destinată utilizării în producție**, ci exclusiv scopului didactic.
